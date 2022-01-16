@@ -6,6 +6,7 @@ const useForecast = () => {
 	const [forecast, setForecast] = useState(null)
 
 	const showSearch = () => setForecast(null)
+	const removeError = () => setError(false)
 
 	const findCity = async (location) => {
 		setLoading(true)
@@ -32,7 +33,13 @@ const useForecast = () => {
 		setLoading(false)
 	}
 
-	const getLocation = () => navigator.geolocation.getCurrentPosition(success, error)
+	const getLocation = async () => {
+		if ('geolocation' in navigator) {
+			await navigator.geolocation.getCurrentPosition(success, error, { enableHighAccuracy: true })
+		} else {
+			setError('browser not supported')
+		}
+	}
 
 	const success = async ({ coords }) => {
 		const { latitude, longitude } = coords
@@ -40,7 +47,26 @@ const useForecast = () => {
 		findByGPS(latitude, longitude)
 	}
 
-	const error = (err) => setError(`ERROR(${err.code}): ${err.message}`)
+	const error = ({ code }) => {
+		switch (code) {
+			case 1:
+				setError(
+					`The acquisition of the geolocation information failed because the page didn't have the permission to do it.`,
+				)
+				break
+			case 2:
+				setError(
+					`The acquisition of the geolocation failed because one or several internal sources of position returned an internal error.`,
+				)
+				break
+			case 3:
+				setError(`Geolocation information was not obtained in the allowed time.`)
+				break
+			default:
+				setError(`Please see later`)
+				break
+		}
+	}
 
 	return {
 		isLoading,
@@ -49,6 +75,7 @@ const useForecast = () => {
 		findCity,
 		showSearch,
 		getLocation,
+		removeError,
 	}
 }
 
