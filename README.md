@@ -25,5 +25,5 @@ A simple weather app built with React
 ## Contact US
 
 - Email: [Alikhani.dev@gmail.com](mailto:alikhani.dev@gmail.com)
-- Linkedin: [Alikhani](www.linkedin.com/in/amir-hossein-agha-alikhani-060a88217)
+- Linkedin: [Alikhani](https://www.linkedin.com/in/amir-hossein-agha-alikhani-060a88217)
 - Instagram: [@Alikhani_developer](https://www.instagram.com/alikhani_developer/)
